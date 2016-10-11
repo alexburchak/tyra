@@ -1,0 +1,35 @@
+server:
+  port: 8081
+
+info:
+  version: local
+
+endpoints:
+  shutdown:
+    enabled: false
+
+security:
+  user:
+    name: user
+    password: password
+  basic:
+    path: /mgmt
+  require-ssl: false
+
+management:
+  context-path: /mgmt
+
+spring:
+  thymeleaf:
+    cache: false
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: true
+  session:
+    store-type: none
+
+tyra:
+  messaging:
+    endpoint: /sockjs

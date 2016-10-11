@@ -1,0 +1,116 @@
+buildscript {
+    ext {
+        springBootVersion = '1.4.0.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'spring-boot'
+apply plugin: "jacoco"
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+version = new File('version').text
+
+jar {
+    baseName = 'tyra'
+    manifest {
+        attributes 'Implementation-Vendor': 'Alexander Burchak',
+                'Implementation-Title': 'Tyra(nnosaurus)',
+                'Implementation-Version': version
+    }
+    exclude('**/application.yml')
+}
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    providedRuntime
+}
+
+dependencies {
+    compile('io.netty:netty-all:4.0.39.Final')
+    compile('io.projectreactor:reactor-net')
+    compile('org.apache.commons:commons-lang3:3.4')
+    compile('commons-io:commons-io:2.4')
+    compile('commons-codec:commons-codec:1.9')
+    compile('org.projectlombok:lombok:1.16.6')
+    compile('org.springframework.boot:spring-boot-actuator')
+    compile('org.springframework.boot:spring-boot-starter-aop')
+    compile('org.springframework.boot:spring-boot-starter-jersey')
+    compile('org.springframework.boot:spring-boot-starter-logging')
+    compile('org.springframework.boot:spring-boot-starter-validation')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+    compile('org.springframework.boot:spring-boot-starter-tomcat')
+    compile('org.springframework.boot:spring-boot-starter-websocket')
+    compile('org.springframework.boot:spring-boot-starter-security')
+    compile('org.springframework.security:spring-security-messaging')
+    compile('org.springframework.session:spring-session')
+    compile('com.hazelcast:hazelcast:3.7.2')
+
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
+    testCompile('org.testng:testng:6.8.21')
+}
+
+processResources {
+    filesMatching('static/*.txt') {
+        expand(project.properties)
+    }
+}
+
+test {
+    useTestNG()
+}
+
+jacoco {
+    toolVersion = "0.7.7.201606060606"
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        csv.enabled false
+        html.destination "${buildDir}/jacoco/html"
+    }
+}
+
+task copyCompose(type: Copy, description: 'Copy Docker Compose scripts', group: "Build") {
+    dependsOn assemble
+    into("${project.buildDir}")
+    into('compose/') {
+        from "${project.projectDir}/compose/"
+    }
+    into('compose/tyra/lib/') {
+        from jar
+        rename { String fileName ->
+            fileName.replaceAll("-\\d\\.\\d\\.\\d(-SNAPSHOT)?", "")
+        }
+    }
+}
+
+task zip(type: Zip, description: 'Create zip distribution', group: "Build") {
+    dependsOn copyCompose
+    baseName = jar.baseName
+    from ("${project.buildDir}/compose/tyra/bin/") {
+        into('bin/')
+        include '*.*'
+    }
+    from ("${project.buildDir}/compose/tyra/conf/") {
+        into('conf/')
+        include '*.*'
+    }
+    from (jar) {
+        into('lib/')
+    }
+}

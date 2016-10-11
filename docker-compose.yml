@@ -1,0 +1,11 @@
+version: '2'
+
+services:
+  # Tyra
+  tyra:
+    image: tyra
+    build: ./build/compose/tyra/
+    hostname: tyra
+    container_name: tyra
+    ports:
+      - "8081:8081"
