@@ -1,4 +1,4 @@
-# Tra(nnosaurus) project
+# Tyra(nnosaurus) project
 
 The project is a working demo of Web application which allows monitoring HTTP requests, including headers, parameters and cookies, coming to certain URL generated
 by the application.
@@ -7,6 +7,8 @@ First of all, you obtain a *SID* (a.k.a. session ID) generated from the index pa
 server and see all incoming *POST* or *GET* requests coming to URL */hook?sid=<YOUR SID>*, i.e. for the same session ID.
 
 This project is hosted on [GitHub](https://github.com/), can be deployed locally, to Docker containers, or to [Heroku](https://www.heroku.com/).
+
+Live demo: [https://radiant-peak-78397.herokuapp.com/]().
 
 ## Building the project
 
