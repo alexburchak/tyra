@@ -62,9 +62,13 @@ public class TyraWebSocketHandler extends TextWebSocketHandler {
     private void onTyra(WebSocketSession session, String sid) throws IOException {
         log.debug("Initializing WebSocket session {} for sid {}", session.getId(), sid);
 
-        distributedWebSocketSessionManager.register(sid, session);
+        if (distributedWebSocketSessionManager.register(sid, session)) {
+            distributedWebSocketSessionManager.send(sid, OutcomingMessageType.TYRA.format(sid));
+        } else {
+            session.sendMessage(new TextMessage(OutcomingMessageType.USED.format(sid)));
 
-        distributedWebSocketSessionManager.send(sid, OutcomingMessageType.TYRA.format(sid));
+            distributedWebSocketSessionManager.send(sid, OutcomingMessageType.CONCURRENT.format(sid));
+        }
     }
 
     private void onEcirt(WebSocketSession session) {

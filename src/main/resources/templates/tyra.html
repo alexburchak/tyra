@@ -18,6 +18,7 @@
     <script type="text/javascript" th:inline="javascript">
         var ws = null;
         var recInterval = null;
+        var recoverable = true;
 
         function connect() {
             if (ws == null) {
@@ -44,17 +45,33 @@
 
                     clearInterval(recInterval);
 
-                    recInterval = setInterval(connect, 1000);
+                    if (recoverable) {
+                        recInterval = setInterval(connect, 1000);
+                    }
                 };
             }
         }
 
         var handler = {
             "TYRA": function(command) {
-                console.log(command);
+                $("div.used").css('display', 'none');
             },
             "ARYT": function(command) {
+                recoverable = false;
                 ws.close();
+            },
+            "USED": function(command) {
+                $("div.used").css('display', 'inline-block');
+
+                recoverable = false;
+                ws.close();
+            },
+            "CONCURRENT": function(command) {
+                var element = $("div #container .hidden .concurrent").clone();
+
+                element.prependTo("#container");
+
+                element.fadeIn(1500);
             },
             "REQUEST": function(command) {
                 var json = $.parseJSON(command);
@@ -102,7 +119,7 @@
 
 <body onload="connect();">
 <noscript>
-    <h2 style="color: #ff0000" th:text="#{message.javascript.disabled}"></h2>
+    <h2 class="warn" th:text="#{message.javascript.disabled}"></h2>
 </noscript>
 
 <div class="logo">
@@ -111,14 +128,14 @@
 </div>
 
 <div>
-    <div id="hidden" style="display: none">
+    <div id="hidden" class="hidden">
         <div class="param value2">
         </div>
         <div class="header value2">
         </div>
         <div class="cookie value2">
         </div>
-        <div class="fading element">
+        <div class="hidden element">
             <div>
                 <div class="name inline-block">METHOD:</div>
                 <div class="method value inline-block"></div>
@@ -158,6 +175,10 @@
         </div>
     </div>
     <div id="container" class="container">
+        <div class="used hidden warn" th:text="#{message.sid.already.used}"></div>
+        <div class="hidden">
+            <div class="concurrent warn" th:text="#{message.sid.concurrent.access}"></div>
+        </div>
     </div>
 </div>
 </body>

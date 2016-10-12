@@ -9,9 +9,13 @@ public enum OutcomingMessageType {
      */
     TYRA,
     /**
-     * SID is expired or does not exist, as reply to {@link IncomingMessageType#TYRA}
+     * SID is already used, as reply to {@link IncomingMessageType#TYRA}
      */
-    EXPIRED,
+    USED,
+    /**
+     * There was attempt to open page with the same SID
+     */
+    CONCURRENT,
     /**
      * HTTP Request dump message
      */

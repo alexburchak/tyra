@@ -11,7 +11,7 @@ public enum IncomingMessageType {
     /**
      * Handshake like message type
      */
-    TYRA("^TYRA\\s+'(\\w+)'$") {
+    TYRA("^TYRA\\s+'([^\\s]+)'$") {
         protected void visit(IncomingMessageTypeVisitor visitor, String payload) throws IOException {
             visitor.visitTyra(payload);
         }

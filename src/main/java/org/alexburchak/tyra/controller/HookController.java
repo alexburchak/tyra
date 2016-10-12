@@ -28,6 +28,8 @@ public class HookController {
     @Autowired
     private DistributedWebSocketSessionManager distributedWebSocketSessionManager;
 
+    private ObjectMapper objectMapper = new ObjectMapper();
+
     @RequestMapping(PATH_HOOK)
     public void hook(@RequestParam(PARAM_SID) String sid, HttpServletRequest request) throws URISyntaxException, IOException {
         log.debug("Received {} request for sid {}", PATH_HOOK, sid);
@@ -37,8 +39,8 @@ public class HookController {
         log.debug("Created HTTP request {}", httpRequest);
 
         StringWriter writer = new StringWriter();
-        new ObjectMapper()
-                .writeValue(writer, httpRequest);
+        objectMapper.writeValue(writer, httpRequest);
+
         distributedWebSocketSessionManager.send(sid, OutcomingMessageType.REQUEST.format(writer.toString()));
     }
 }

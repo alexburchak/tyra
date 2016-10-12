@@ -1,4 +1,28 @@
-.fading {
+.used {
+}
+
+.concurrent {
+    background-color: #F7F3DF !important;
+    -webkit-box-shadow: 0 0 20px 2px #C1C1AA !important;
+    -moz-box-shadow: 0 0 20px 2px #C1C1AA !important;
+}
+
+.warn {
+    text-align: center;
+    background-color: #F7DFD7;
+    min-width: 800px;
+    min-height: 20px;
+    padding: 10px;
+    margin: 0px 20px 30px 20px;
+    font-family: sans-serif;
+    font-size: 10pt;
+    -webkit-border-radius: 20px 20px;
+    -webkit-box-shadow: 0 0 20px 2px #E2D5D5;
+    -moz-border-radius: 20px 20px;
+    -moz-box-shadow: 0 0 20px 2px #E2D5D5;
+}
+
+.hidden {
     display: none;
 }
 
@@ -21,14 +45,16 @@
 
 .element {
     background-color: #90DF70;
+    min-width: 800px;
     min-height: 20px;
     padding: 10px;
     margin: 10px 20px 30px 20px;
     font-family: sans-serif;
     font-size: 10pt;
     -webkit-border-radius: 20px 20px;
-    -webkit-box-shadow: 0 0 20px 2px #999;
-    -moz-box-shadow: 0 0 20px 2px #999;
+    -webkit-box-shadow: 0 0 20px 2px #999999;
+    -moz-border-radius: 20px 20px;
+    -moz-box-shadow: 0 0 20px 2px #999999;
 }
 
 .element .value {
@@ -64,4 +90,18 @@
 .container {
     margin-bottom: 20px;
     width: 100%;
+}
+
+.label {
+    width: 200px;
+    display: inline-block;
+    margin: 10px 0px 10px 50px;
+}
+
+input#sid {
+    width: 300px;
+}
+
+input#url {
+    width: 500px;
 }

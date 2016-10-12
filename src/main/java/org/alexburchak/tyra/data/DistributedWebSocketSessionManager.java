@@ -45,6 +45,8 @@ public class DistributedWebSocketSessionManager {
         }
     }
 
+    private static final String TYRA_SID_ATTRIBUTE = "Tyra-sid";
+
     @Autowired
     private IExecutorService executorService;
     @Autowired
@@ -55,12 +57,19 @@ public class DistributedWebSocketSessionManager {
 
     private static final Map<String, WebSocketSession> WEB_SOCKET_SESSION_MAP = new HashMap<>();
 
-    public void register(String sid, WebSocketSession session) {
+    public boolean register(String sid, WebSocketSession session) {
         synchronized (WEB_SOCKET_SESSION_MAP) {
-            WEB_SOCKET_SESSION_MAP.putIfAbsent(sid, session);
-            membersMap.putIfAbsent(sid, member);
+            Member other = membersMap.putIfAbsent(sid, member);
+            if (other != null) {
+                log.debug("There is already sid {} registered for {}", sid, other);
+                return false;
+            }
+
+            WEB_SOCKET_SESSION_MAP.put(sid, session);
+            session.getAttributes().put(TYRA_SID_ATTRIBUTE, sid);
 
             log.debug("Registered new WebSocket session for sid {}", sid);
+            return true;
         }
     }
 
@@ -77,16 +86,14 @@ public class DistributedWebSocketSessionManager {
 
     public void remove(WebSocketSession session) {
         synchronized (WEB_SOCKET_SESSION_MAP) {
-            WEB_SOCKET_SESSION_MAP.entrySet().stream()
-                    .filter(e -> e.getValue() == session)
-                    .findAny()
-                    .ifPresent(e -> {
-                        if (WEB_SOCKET_SESSION_MAP.remove(e.getKey()) != null) {
-                            membersMap.remove(e.getKey());
+            String sid = (String) session.getAttributes().get(TYRA_SID_ATTRIBUTE);
+            if (sid != null) {
+                if (WEB_SOCKET_SESSION_MAP.remove(sid, session)) {
+                    membersMap.remove(sid);
 
-                            log.debug("Removed WebSocket session for sid {}", e.getKey());
-                        }
-                    });
+                    log.debug("Removed WebSocket session for sid {}", sid);
+                }
+            }
         }
     }
 }

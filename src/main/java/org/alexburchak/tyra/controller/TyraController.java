@@ -18,10 +18,10 @@ public class TyraController {
 
     public static final String PARAM_SID = "sid";
 
-    static final String MODEL_ENDPOINT = "endpoint";
-    static final String MODEL_SID = "sid";
+    private static final String MODEL_ENDPOINT = "endpoint";
+    private static final String MODEL_SID = "sid";
 
-    static final String RESULT_SUCCESS = "tyra";
+    private static final String RESULT_SUCCESS = "tyra";
 
     @Autowired
     private TyraConfiguration tyraConfiguration;

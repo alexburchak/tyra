@@ -2,6 +2,7 @@ package org.alexburchak.tyra.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.alexburchak.tyra.controller.HookController;
+import org.alexburchak.tyra.controller.IndexController;
 import org.alexburchak.tyra.controller.TyraController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -35,6 +36,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/*.png").permitAll()
                 .antMatchers("/*.txt").permitAll()
                 .antMatchers("/*.css").permitAll()
+                .antMatchers(IndexController.PATH_INDEX).permitAll()
                 .antMatchers(TyraController.PATH_TYRA).permitAll()
                 .antMatchers(HookController.PATH_HOOK).permitAll()
                 .antMatchers(tyraConfiguration.getEndpoint() + "/**").permitAll()

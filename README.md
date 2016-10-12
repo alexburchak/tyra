@@ -88,16 +88,21 @@ $ docker-compose down
 
 ### Deployment to Heroku
 
+Register on [Heroku](https://www.heroku.com/), go to the project directory and type
+
 ```sh
 $ heroku create
 $ heroku config:set GRADLE_TASK="zip -x test"
 $ heroku git:remote -a radiant-peak-78397
 ```
 
+Here, *radiant-peak-78397* is a name given to the application by Heroku. Push your changes with *git*, to start deployment:
+
 ```sh
-$ git commit
-$ git push origin heroku
+$ git push heroku master
 ```
+
+Use following command to start working with the application:
 
 ```sh
 heroku open
