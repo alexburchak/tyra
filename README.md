@@ -8,7 +8,7 @@ server and see all incoming *POST* or *GET* requests coming to URL */hook?sid=<Y
 
 This project is hosted on [GitHub](https://github.com/), can be deployed locally, to Docker containers, or to [Heroku](https://www.heroku.com/).
 
-Live demo: [https://radiant-peak-78397.herokuapp.com/]().
+Live demo: [on Heroku](https://radiant-peak-78397.herokuapp.com/).
 
 ## Building the project
 
@@ -90,7 +90,7 @@ $ docker-compose down
 
 ### Deployment to Heroku
 
-Register on [Heroku](https://www.heroku.com/), go to the project directory and type
+Register on [Heroku](https://www.heroku.com/), install CLI tools from [here](https://devcenter.heroku.com/articles/heroku-command-line), go to the project directory and type
 
 ```sh
 $ heroku create
