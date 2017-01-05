@@ -7,9 +7,11 @@
     <link type="text/css" rel="stylesheet" href="/stylesheet.css"/>
 
     <script src="/jquery-3.1.1.js"></script>
+    <script src="/copy.js"></script>
 
     <script type="text/javascript" th:inline="javascript">
         var baseUrl = [[${baseUrl}]];
+        var apiKey = [[${apiKey}]];
 
         /*<![CDATA[*/
 
@@ -24,8 +26,22 @@
                 return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
             });
 
+            var url = baseUrl + "?sid=" + uuid;
+
             $("input:text#sid").val(uuid);
-            $("input:text#url").val(baseUrl + "?sid=" + uuid);
+            $("input:text#url").val(url);
+
+            if (apiKey) {
+                $.ajax({
+                    data: '{"longUrl": "' + url + '"}',
+                    contentType: 'application/json',
+                    type: 'POST',
+                    url: 'https://www.googleapis.com/urlshortener/v1/url?key=' + apiKey,
+                    success: function (d) {
+                        $("input:text#shorturl").val(d.id);
+                    }
+                });
+            }
         }
 
         function validate() {
@@ -33,6 +49,7 @@
             $("div#validation").css("display", valid ? "none" : "block");
             return valid;
         }
+
         /*]]>*/
     </script>
 
@@ -55,19 +72,20 @@
 
 <form action="tyra" method="get">
     <div id="container" class="container">
-        <div>
-            <div class="label" th:text="#{message.select.sid}"></div><nobr/>
-            <input id="sid" name="sid" onchange="validate()" onkeydown="validate()" type="text"></input><nobr/>
-            <input name="button" type="button" onclick="generateSID()" th:value="#{message.generate.sid}"></input>
-        </div>
-        <div>
-            <div class="label" th:text="#{message.copy.url}"></div><nobr/>
-            <input id="url" name="url" type="text" readonly="true" disabled="disabled"></input>
-        </div>
-        <div>
-            <div class="label"></div>
-            <input type="submit" onclick="return validate()" th:value="#{message.start}"></input>
-        </div>
+        <div class="label" th:text="#{message.select.sid}"></div>
+        <input id="sid" name="sid" onchange="validate()" onkeydown="validate()" type="text"/>
+        <input type="button" onclick="generateSID()" th:value="#{message.generate.sid}"/>
+        <p/>
+        <div class="label" th:text="#{message.generated.url}"></div>
+        <input id="url" type="text" readonly="true"/>
+        <button onclick="copy(this, 'url'); return false;" th:text="#{message.copy}"/>
+        <p/>
+        <div class="label" th:text="#{message.shortened.url}"></div>
+        <input id="shorturl" type="text" readonly="true"/>
+        <button onclick="copy(this, 'shorturl'); return false;" th:text="#{message.copy}"/>
+        <p/>
+        <div class="label"></div>
+        <input type="submit" onclick="return validate()" th:value="#{message.start}"></input>
     </div>
 </form>
 </body>

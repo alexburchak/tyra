@@ -110,6 +110,21 @@ Use following command to start working with the application:
 heroku open
 ```
 
+## Testing the application
+
+Open [this page](http://localhost:8081/) in browser, click on *Generate* button, then *Copy* button, then *Start* button, switch to command line and execute in console
+
+```sh
+$ curl -X POST \
+       --header "MyHeader: header-value" \
+       --data "sid=123" \
+       --data "MyParam=param-value" \
+       --cookie "MyCookie=cookie-value" \
+       http://localhost:8081/hook?sid=...
+```
+
+In the link above the URL should be pasted from the clipboard.
+
 ## Monitoring the application
 
 ### Watching log files

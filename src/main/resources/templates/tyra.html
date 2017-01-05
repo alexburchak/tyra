@@ -14,6 +14,7 @@
 
     <script src="/jquery-3.1.1.js"></script>
     <script src="/sockjs-0.3.4.js"></script>
+    <script src="/copy.js"></script>
 
     <script type="text/javascript" th:inline="javascript">
         var ws = null;
@@ -86,32 +87,53 @@
                 element.find("div.remote-port").text(json["remotePort"]);
                 element.find("div.remote-user").text(json["remoteUser"]);
 
+                var curl = "curl -X " + json["method"];
+
                 for (name in json.parameters) {
                     var param = $(hidden).find("div.param").clone();
-                    param.text(json.parameters[name].name + "=" + json.parameters[name].value);
+                    var p = json.parameters[name].name;
+                    var v = json.parameters[name].value;
+
+                    param.text(p + "=" + v);
 
                     element.find("div.params").append(param);
+
+                    curl = curl + " -d '" + p + "=" + v + "'";
                 }
 
                 for (name in json.headers) {
                     var header = $(hidden).find("div.header").clone();
-                    header.text(json.headers[name].name + "=" + json.headers[name].value);
+                    var h = json.headers[name].name;
+                    var v = json.headers[name].value;
+
+                    header.text(h + "=" + v);
 
                     element.find("div.headers").append(header);
+
+                    curl = curl + " -H '" + h + ":" + v + "'";
                 }
 
                 for (name in json.cookies) {
                     var cookie = $(hidden).find("div.cookie").clone();
-                    cookie.text(json.cookies[name].name + "=" + json.cookies[name].value);
+                    var c = json.cookies[name].name;
+                    var v = json.cookies[name].value;
+
+                    cookie.text(c + "=" + v);
 
                     element.find("div.cookies").append(cookie);
+
+                    curl = curl + " -b '" + c + ":" + v + "'";
                 }
+
+                curl = curl + " " + document.location.protocol + '//' + document.location.hostname + ":" + document.location.port + "/hook";
+
+                element.find("input.curl").val(curl);
 
                 element.prependTo("#container");
 
                 element.fadeIn(1500);
             }
-        }
+        };
     </script>
 
     <title>Tyra(nnosaurus)</title>
@@ -136,6 +158,10 @@
         <div class="cookie value2">
         </div>
         <div class="hidden element">
+            <div class="controls">
+                <input id="curl" type="text" class="curl"/>
+                <button onclick="copy(this, 'curl')" th:text="#{message.copy}"/>
+            </div>
             <div>
                 <div class="name inline-block">METHOD:</div>
                 <div class="method value inline-block"></div>

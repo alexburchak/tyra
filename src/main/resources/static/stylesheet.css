@@ -59,11 +59,27 @@
 
 .element .value {
     font-size: 10pt;
+    white-space: -moz-pre-wrap;
+    white-space: -hp-pre-wrap;
+    white-space: -o-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: pre-wrap;
+    white-space: pre-line;
+    word-wrap: break-word;
+    word-break: break-all;
 }
 
 .element .value2 {
     font-size: 10pt;
     padding-left: 200px;
+    white-space: -moz-pre-wrap;
+    white-space: -hp-pre-wrap;
+    white-space: -o-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: pre-wrap;
+    white-space: pre-line;
+    word-wrap: break-word;
+    word-break: break-all;
 }
 
 .element .params {
@@ -93,15 +109,101 @@
 }
 
 .label {
+    float: left;
     width: 200px;
     display: inline-block;
-    margin: 10px 0px 10px 50px;
 }
 
 input#sid {
-    width: 300px;
+    width: 400px;
 }
 
 input#url {
     width: 500px;
+}
+
+input#shorturl {
+    width: 500px;
+}
+
+.curl {
+    -webkit-transition: all 0.7s ease 0s;
+    -moz-transition: all 0.7s ease 0s;
+    -o-transition: all 0.7s ease 0s;
+    transition: all 0.7s ease 0s;
+}
+
+.curl:focus {
+    width: 450px;
+}
+
+::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+}
+
+.controls {
+    padding-right: 20px;
+    float: right;
+}
+
+input, button {
+    font-size: 12pt;
+    border: 1px solid #333;
+    outline: 0;
+    box-shadow: none;
+}
+
+input[type='text'] {
+    float: left;
+    width: 150px;
+    background-color: #FFFFFF;
+    border-right: 0 none;
+    border-radius: 10px 0 0 10px;
+    padding-left: 7px;
+}
+
+input[type='submit'] {
+    position: relative;
+    background-color: #CFCFCF;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 0 10px 0 10px;
+}
+
+input[type='button'], button {
+    position: relative;
+    background-color: #CFCFCF;
+    cursor: pointer;
+    border-radius: 0px 10px 10px 0;
+}
+
+.copied::after {
+    position: absolute;
+    top: -40px;
+    right: 0px;
+    display: block;
+    content: "Copied";
+    font-size: 10pt;
+    padding: 2px 5px;
+    color: #FFFFFF;
+    background-color: #4A743A;
+    border-radius: 0 10px 10px 0;
+    opacity: 0;
+    will-change: opacity, transform;
+    animation: showcopied 1.5s ease;
+}
+
+@keyframes showcopied {
+    0% {
+        opacity: 0;
+        transform: translateY(100%);
+    }
+    70% {
+        opacity: 0.8;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+    }
 }

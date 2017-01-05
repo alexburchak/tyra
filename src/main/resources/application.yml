@@ -33,3 +33,5 @@ spring:
 tyra:
   messaging:
     endpoint: /sockjs
+  shortener:
+    apiKey: AIzaSyDRNC7Es01GqonLyd_KSsuNCHkwGvdq-Q4
